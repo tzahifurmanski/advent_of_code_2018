@@ -3,10 +3,9 @@
 from collections import defaultdict
 
 
-def analyze_id_stats(box_id):
+def count_chars_in_word(box_id):
     word_stats = defaultdict(int)
 
-    # Count the occurrences of each character in the word
     for char in box_id:
         word_stats[char] += 1
 
@@ -44,25 +43,21 @@ def compare_words(word1, word2):
     return None if diff == 0 else result_word
 
 
-# Load the boxes_ids to memory
 box_ids = []
-file = open("day2_input.txt", "r")
-for current_action in file:
-    box_ids.append(current_action)
-file.close()
-print("Done loading")
 
-# Locate the candidates
 num_of_twos = 0
 num_of_threes = 0
 candidates = []
-for box_id in box_ids:
-    result = analyze_id_stats(box_id)
-    twos, threes = is_candidate(result)
+
+file = open("day2_input.txt", "r")
+for box_id in file:
+    word_stats = count_chars_in_word(box_id)
+    twos, threes = is_candidate(word_stats)
     if twos or threes:
         num_of_twos += twos
         num_of_threes += threes
         candidates.append(box_id)
+file.close()
 
 # Step 1 - find the result = 6972
 print(num_of_twos * num_of_threes)
@@ -74,10 +69,8 @@ for word in candidates:
         found_word = compare_words(word, word2)
         if found_word:
             # Step 2 - find the result = aixwcbzrmdvpsjfgllthdyoqe
-            print("*** Found! ***")
             print(found_word)
-            print("==============")
-            found=True
+            found = True
             break
 
     if found:
